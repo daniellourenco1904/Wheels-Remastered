@@ -46,6 +46,29 @@ public class Main {
         System.out.printf("Resumo: Valor do aluguel: R$ %.2f | Multa: R$ %.2f%n", aluguel.calcularDiaria(), multa);
     }
 
+    public static void cadastrarBicicletas(){
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Tipo: ");
+        String tipo = sc.nextLine();
+        System.out.print("Modelo:");
+        String modelo = sc.nextLine();
+        System.out.print("Diária: ");
+        double diaria = sc.nextDouble();
+        System.out.print("Depósito: ");
+        double deposito = sc.nextDouble();
+        sc.nextLine(); // Consumir o \n
+
+        int novaId = bicicletas.size() + 1;
+
+        Bicicleta novaBicicleta = new Bicicleta(novaId, tipo, modelo, diaria, deposito, Bicicleta.Status.DISPONIVEL);
+        bicicletas.add(novaBicicleta);
+
+        ArquivoCSV.salvarBicicletas(bicicletas, "dados/bicicletas.csv");
+
+        System.out.println("Bicicleta cadastrada com sucesso!");
+    };
+
     public static void buscarBicicletas(String modelo, String tipo) {
         List<Bicicleta> encontradas = bicicletas.stream()
                 .filter(b -> (modelo == null || b.getModelo().equalsIgnoreCase(modelo)))
@@ -103,6 +126,23 @@ public class Main {
         bicicleta.setStatus(Bicicleta.Status.ALUGADA);
     }
 
+    public static void listarAlugueis(){
+        if (alugueis.isEmpty()){
+            System.out.print("Nenhum aluguel registrado.");
+        }
+
+        for (Aluguel a : alugueis){
+            System.out.printf("ID: %d | Cliente: %s | Bicicleta: %s | Dias: %d | Ativo: %s | Início: %s | Retorno: %s%n",
+                    a.getAluguelId(),
+                    a.getCliente().getNome(),
+                    a.getBicicleta().getModelo(),
+                    a.getQtdDias(),
+                    a.isAtivo() ? "Sim" : "Não",
+                    a.getDataAluguel(),
+                    a.getDataRetorno());
+        }
+    }
+
     public static void cadastrarCliente() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nome: ");
@@ -112,7 +152,7 @@ public class Main {
         System.out.print("Telefone: ");
         String telefone = sc.nextLine();
         System.out.print("ID do cliente: ");
-        int clienteId = sc.nextInt();
+        int clienteId = clientes.size() + 1;
         sc.nextLine();
 
         String previousBike = "";
@@ -122,6 +162,8 @@ public class Main {
         ArquivoCSV.salvarClientes(clientes,"dados/clientes.csv");
         System.out.println("Cliente cadastrado com sucesso!");
     }
+
+
 
     public static void main(String[] args) {
         clientes = ArquivoCSV.carregarClientes("clientes.csv");

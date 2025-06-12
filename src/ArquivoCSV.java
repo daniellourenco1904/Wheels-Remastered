@@ -8,17 +8,15 @@ public class ArquivoCSV {
     public static void salvarBicicletas(List<Bicicleta> bicicletas, String caminho) {
         try (PrintWriter writer = new PrintWriter(caminho)) {
             for (Bicicleta b : bicicletas) {
-                writer.printf("%d,%s,%s,%s,%s,%.2f,%.2f,%s%n",
+                writer.printf("%d,%s,%s,%.2f,%.2f,%s%n",
                         b.getBicicletaId(),
                         b.getTipo(),
-                        b.getTamanho(),
-                        b.getMarca(),
                         b.getModelo(),
                         b.getDiaria(),
                         b.getDeposito(),
-                        b.getStatus().name());
+                        b.getStatus().name()
+                );
             }
-            System.out.println("Bicicletas salvas com sucesso em: " + caminho);
         } catch (IOException e) {
             System.out.println("Erro ao salvar bicicletas: " + e.getMessage());
         }
@@ -30,17 +28,15 @@ public class ArquivoCSV {
             String linha;
             while ((linha = reader.readLine()) != null) {
                 String[] campos = linha.split(",");
-                if (campos.length == 8) {
-                    Bicicleta b = new Bicicleta(
-                            Integer.parseInt(campos[0]),
-                            campos[1],
-                            campos[2],
-                            campos[3],
-                            campos[4],
-                            Double.parseDouble(campos[5]),
-                            Double.parseDouble(campos[6]),
-                            Bicicleta.Status.valueOf(campos[7])
-                    );
+                if (campos.length == 6) {
+                    int id = Integer.parseInt(campos[0]);
+                    String tipo = campos[1];
+                    String modelo = campos[2];
+                    double diaria = Double.parseDouble(campos[3]);
+                    double deposito = Double.parseDouble(campos[4]);
+                    Bicicleta.Status status = Bicicleta.Status.valueOf(campos[5]);
+
+                    Bicicleta b = new Bicicleta(id, tipo, modelo, diaria, deposito, status);
                     bicicletas.add(b);
                 }
             }
@@ -145,6 +141,5 @@ public class ArquivoCSV {
         }
         return clientes;
     }
-
 
 }

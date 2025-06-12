@@ -2,8 +2,6 @@ public class Bicicleta {
 
     private int bicicletaId;
     private String tipo;
-    private String tamanho;
-    private String marca;
     private String modelo;
     private double diaria;
     private double deposito;
@@ -15,30 +13,15 @@ public class Bicicleta {
         MANUTENCAO
     }
 
-    public Bicicleta(int bicicletaId, String tipo, String tamanho, String marca, String modelo, double diaria, double deposito, Status status) {
+    public Bicicleta(int bicicletaId, String tipo, String modelo, double diaria, double deposito, Status status) {
         this.bicicletaId = bicicletaId;
         this.tipo = tipo;
-        this.tamanho = tamanho;
-        this.marca = marca;
         this.modelo = modelo;
         this.diaria = diaria;
         this.deposito = deposito;
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Bicicleta{" +
-                "bicicletaId=" + bicicletaId +
-                ", tipo='" + tipo + '\'' +
-                ", tamanho='" + tamanho + '\'' +
-                ", marca='" + marca + '\'' +
-                ", modelo='" + modelo + '\'' +
-                ", diaria=" + diaria +
-                ", deposito=" + deposito +
-                ", status=" + status +
-                '}';
-    }
 
     public Status getStatus() {
         return status;
@@ -48,28 +31,12 @@ public class Bicicleta {
         this.status = status;
     }
 
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
-
     public String getTipo() {
         return tipo;
     }
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public String getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(String tamanho) {
-        this.tamanho = tamanho;
     }
 
     public int getBicicletaId() {
