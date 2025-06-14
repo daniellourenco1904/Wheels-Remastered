@@ -47,8 +47,23 @@ public class Main {
         System.out.printf("Resumo: Valor do aluguel: R$ %.2f | Multa: R$ %.2f%n", aluguel.calcularDiaria(), multa);
     }
 
+    public static String validaEspecial(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Essa bicicleta é especial? (s/n): ");
+        String respostaEspecial;
+        while (true) {
+            respostaEspecial = sc.nextLine().trim().toLowerCase();
+            if (respostaEspecial.equals("s") || respostaEspecial.equals("n")) {
+                return respostaEspecial;
+            }
+            System.out.print("Entrada inválida. Digite apenas 's' para sim ou 'n' para não: ");
+        }
+    }
+
     public static void cadastrarBicicleta(){
         Scanner sc = new Scanner(System.in);
+
+        String especial=validaEspecial();
 
         System.out.print("Tipo: ");
         String tipo = sc.nextLine();
@@ -58,12 +73,23 @@ public class Main {
         double diaria = sc.nextDouble();
         System.out.print("Depósito: ");
         double deposito = sc.nextDouble();
-        sc.nextLine(); // Consumir o \n
-
+        sc.nextLine();
         int novaId = bicicletas.size() + 1;
 
-        Bicicleta novaBicicleta = new Bicicleta(novaId, tipo, modelo, diaria, deposito, Bicicleta.Status.DISPONIVEL);
-        bicicletas.add(novaBicicleta);
+        if (especial.equals("s")) {
+            System.out.print("Idade: ");
+            int idade= sc.nextInt();
+            System.out.print("Valor: ");
+            double valor= sc.nextDouble();
+
+            Bicicleta novaBicicleta = new Especial(novaId, tipo, modelo, diaria, deposito, Bicicleta.Status.DISPONIVEL, idade, valor);
+            bicicletas.add(novaBicicleta);
+        }
+
+        else{
+            Bicicleta novaBicicleta = new Bicicleta(novaId, tipo, modelo, diaria, deposito, Bicicleta.Status.DISPONIVEL);
+            bicicletas.add(novaBicicleta);
+        }
 
         ArquivoCSV.salvarBicicletas(bicicletas, "dados/bicicletas.csv");
 
@@ -152,7 +178,6 @@ public class Main {
         String endereco = sc.nextLine();
         System.out.print("Telefone: ");
         String telefone = sc.nextLine();
-        System.out.print("ID do cliente: ");
         int clienteId = clientes.size() + 1;
         sc.nextLine();
 

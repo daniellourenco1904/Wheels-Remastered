@@ -3,8 +3,8 @@ public class Especial extends Bicicleta{
     private int idade;
     private double valor;
 
-    public Especial(int bicicletaId, String tipo, String tamanho, String marca, String modelo, double diaria, double deposito, Status status, int idade, double valor) {
-        super(bicicletaId, tipo, tamanho, marca, modelo, diaria, deposito, status);
+    public Especial(int bicicletaId, String tipo, String modelo, double diaria, double deposito, Status status, int idade, double valor) {
+        super(bicicletaId, tipo, modelo, diaria, deposito, status);
         this.idade = idade;
         this.valor = valor;
     }
