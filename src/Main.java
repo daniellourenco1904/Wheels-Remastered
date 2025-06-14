@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Main {
     private static List<Cliente> clientes = new ArrayList<>();
     private static List<Bicicleta> bicicletas = new ArrayList<>();
@@ -46,7 +47,7 @@ public class Main {
         System.out.printf("Resumo: Valor do aluguel: R$ %.2f | Multa: R$ %.2f%n", aluguel.calcularDiaria(), multa);
     }
 
-    public static void cadastrarBicicletas(){
+    public static void cadastrarBicicleta(){
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Tipo: ");
@@ -166,10 +167,67 @@ public class Main {
 
 
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         clientes = ArquivoCSV.carregarClientes("clientes.csv");
-        cadastrarCliente();
+        bicicletas = ArquivoCSV.carregarBicicletas("bicicletas.csv");
+        alugueis = ArquivoCSV.carregarAlugueis("alugueis.csv", clientes, bicicletas);
 
-        // Para testes, você pode simular aluguéis e devoluções aqui
-        // devolverBicicleta("João", LocalDate.now());
+        boolean running = true;
+
+        while (running) {
+            System.out.println("\n=== MENU WHEELS ===");
+            System.out.println("1 - Cadastrar cliente");
+            System.out.println("2 - Cadastrar bicicleta");
+            System.out.println("3 - Listar alugueis");
+            System.out.println("4 - Novo aluguel");
+            System.out.println("5 - Devolver bicicleta");
+            System.out.println("6 - Buscar bicicleta");
+            System.out.println("0 - Sair");
+            System.out.print("Escolha uma opção: ");
+
+            int opcao = sc.nextInt();
+            sc.nextLine(); // consumir quebra de linha
+
+            switch (opcao) {
+                case 1:
+                    cadastrarCliente();
+                    ArquivoCSV.salvarClientes(clientes, "clientes.csv");
+                    break;
+                case 2:
+                    cadastrarBicicleta();
+                    ArquivoCSV.salvarBicicletas(bicicletas, "bicicletas.csv");
+                    break;
+                case 3:
+                    listarAlugueis();
+                    break;
+                case 4:
+                    novoAluguel();
+                    ArquivoCSV.salvarAlugueis(alugueis, "alugueis.csv");
+                    ArquivoCSV.salvarBicicletas(bicicletas, "bicicletas.csv");
+                    break;
+                case 5:
+                    System.out.print("Nome do cliente: ");
+                    String nomeCliente = sc.nextLine();
+                    devolverBicicleta(nomeCliente, LocalDate.now());
+                    ArquivoCSV.salvarAlugueis(alugueis, "alugueis.csv");
+                    ArquivoCSV.salvarBicicletas(bicicletas, "bicicletas.csv");
+                    break;
+                case 6:
+                    System.out.print("Modelo: ");
+                    String modelo = sc.nextLine();
+                    System.out.print("Tipo: ");
+                    String tipo = sc.nextLine();
+                    buscarBicicletas(modelo, tipo);
+                    break;
+                case 0:
+                    running = false;
+                    System.out.println("Encerrando o sistema...");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        }
+
+        sc.close();
     }
 }
