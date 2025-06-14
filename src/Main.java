@@ -68,7 +68,7 @@ public class Main {
         ArquivoCSV.salvarBicicletas(bicicletas, "dados/bicicletas.csv");
 
         System.out.println("Bicicleta cadastrada com sucesso!");
-    };
+    }
 
     public static void buscarBicicletas(String modelo, String tipo) {
         List<Bicicleta> encontradas = bicicletas.stream()
