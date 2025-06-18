@@ -2,20 +2,21 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ArquivoCSV {
 
     public static void salvarBicicletas(List<Bicicleta> bicicletas, String caminho) {
         try (PrintWriter writer = new PrintWriter(caminho)) {
             for (Bicicleta b : bicicletas) {
-                writer.printf("%d,%s,%s,%.2f,%.2f,%s%n",
+                writer.print(String.format(Locale.US, "%d,%s,%s,%.2f,%.2f,%s%n",
                         b.getBicicletaId(),
                         b.getTipo(),
                         b.getModelo(),
                         b.getDiaria(),
                         b.getDeposito(),
                         b.getStatus().name()
-                );
+                ));
             }
         } catch (IOException e) {
             System.out.println("Erro ao salvar bicicletas: " + e.getMessage());
@@ -49,7 +50,7 @@ public class ArquivoCSV {
     public static void salvarAlugueis(List<Aluguel> alugueis, String caminho) {
         try (PrintWriter writer = new PrintWriter(caminho)) {
             for (Aluguel a : alugueis) {
-                writer.printf("%d,%d,%d,%d,%.2f,%s,%s,%b%n",
+                writer.print(String.format(Locale.US, "%d,%d,%d,%d,%.2f,%s,%s,%b%n",
                         a.getAluguelId(),
                         a.getCliente().getClienteId(),
                         a.getBicicleta().getBicicletaId(),
@@ -58,7 +59,7 @@ public class ArquivoCSV {
                         a.getDataAluguel(),
                         a.getDataRetorno(),
                         a.isAtivo()
-                );
+                ));
             }
         } catch (IOException e) {
             System.out.println("Erro ao salvar aluguéis: " + e.getMessage());
@@ -106,12 +107,12 @@ public class ArquivoCSV {
     public static void salvarClientes(List<Cliente> clientes, String caminho) {
         try (PrintWriter writer = new PrintWriter(caminho)) {
             for (Cliente c : clientes) {
-                writer.printf("%d,%s,%s,%s,%s%n",
+                writer.print(String.format(Locale.US, "%d,%s,%s,%s,%s%n",
                         c.getClienteId(),
                         c.getNome(),
                         c.getTelefone(),
                         c.getEmail(),
-                        c.getPreviousBike() != null ? c.getPreviousBike() : "");
+                        c.getPreviousBike() != null ? c.getPreviousBike() : ""));
             }
         } catch (IOException e) {
             System.out.println("Erro ao salvar clientes: " + e.getMessage());
@@ -140,5 +141,4 @@ public class ArquivoCSV {
         }
         return clientes;
     }
-
 }

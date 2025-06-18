@@ -210,7 +210,6 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
         clientes = ArquivoCSV.carregarClientes("clientes.csv");
         bicicletas = ArquivoCSV.carregarBicicletas("bicicletas.csv");
