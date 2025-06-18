@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 
@@ -9,8 +10,6 @@ public class Main {
     private static List<Cliente> clientes = new ArrayList<>();
     private static List<Bicicleta> bicicletas = new ArrayList<>();
     private static List<Aluguel> alugueis = new ArrayList<>();
-
-
 
     public static void devolverBicicleta(String nomeCliente, LocalDate dataDevolucao) {
         Aluguel aluguel = alugueis.stream()
@@ -91,7 +90,7 @@ public class Main {
             bicicletas.add(novaBicicleta);
         }
 
-        ArquivoCSV.salvarBicicletas(bicicletas, "dados/bicicletas.csv");
+        ArquivoCSV.salvarBicicletas(bicicletas, "bicicletas.csv");
 
         System.out.println("Bicicleta cadastrada com sucesso!");
     }
@@ -110,6 +109,26 @@ public class Main {
                 System.out.printf("ID: %d | Modelo: %s | Tipo: %s | Status: %s%n",
                         b.getBicicletaId(), b.getModelo(), b.getTipo(), b.getStatus());
             }
+        }
+    }
+
+    public static void listarBicicletas() {
+        if (bicicletas.isEmpty()) {
+            System.out.println("Nenhuma bicicleta cadastrada.");
+            return;
+        }
+
+        System.out.println("=== Bicicletas Cadastradas ===");
+        for (Bicicleta b : bicicletas) {
+            System.out.printf(
+                    "ID: %d | Tipo: %s | Modelo: %s | Diária: R$ %.2f | Depósito: R$ %.2f | Status: %s%n",
+                    b.getBicicletaId(),
+                    b.getTipo(),
+                    b.getModelo(),
+                    b.getDiaria(),
+                    b.getDeposito(),
+                    b.getStatus()
+            );
         }
     }
 
@@ -141,13 +160,14 @@ public class Main {
 
         System.out.print("Quantidade de dias do aluguel: ");
         int qtdDias = sc.nextInt();
-        System.out.print("Valor depositado: ");
-        double valorDepositado = sc.nextDouble();
+        System.out.printf("Valor a ser depositado: R$ %.2f%n", bicicleta.getDeposito());
+        double valorDepositado = bicicleta.getDeposito();
         sc.nextLine();
         int aluguelId = alugueis.size() + 1;
         LocalDate dataAluguel = LocalDate.now();
 
         Aluguel aluguel = new Aluguel(aluguelId, valorDepositado, qtdDias, bicicleta, cliente, dataAluguel);
+
         alugueis.add(aluguel);
         cliente.setPreviousBike(bicicleta.getModelo());
         bicicleta.setStatus(Bicicleta.Status.ALUGADA);
@@ -174,7 +194,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.print("Nome: ");
         String nome = sc.nextLine();
-        System.out.print("Endereço: ");
+        System.out.print("Email: ");
         String endereco = sc.nextLine();
         System.out.print("Telefone: ");
         String telefone = sc.nextLine();
@@ -185,13 +205,12 @@ public class Main {
         Cliente novoCliente = new Cliente(nome, previousBike, telefone, clienteId, endereco);
 
         clientes.add(novoCliente);
-        ArquivoCSV.salvarClientes(clientes,"dados/clientes.csv");
+        ArquivoCSV.salvarClientes(clientes,"clientes.csv");
         System.out.println("Cliente cadastrado com sucesso!");
     }
 
-
-
     public static void main(String[] args) {
+        Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
         clientes = ArquivoCSV.carregarClientes("clientes.csv");
         bicicletas = ArquivoCSV.carregarBicicletas("bicicletas.csv");
@@ -207,35 +226,30 @@ public class Main {
             System.out.println("4 - Novo aluguel");
             System.out.println("5 - Devolver bicicleta");
             System.out.println("6 - Buscar bicicleta");
+            System.out.println("7 - Listar bicicletas");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
 
             int opcao = sc.nextInt();
-            sc.nextLine(); // consumir quebra de linha
+            sc.nextLine();
 
             switch (opcao) {
                 case 1:
                     cadastrarCliente();
-                    ArquivoCSV.salvarClientes(clientes, "clientes.csv");
                     break;
                 case 2:
                     cadastrarBicicleta();
-                    ArquivoCSV.salvarBicicletas(bicicletas, "bicicletas.csv");
                     break;
                 case 3:
                     listarAlugueis();
                     break;
                 case 4:
                     novoAluguel();
-                    ArquivoCSV.salvarAlugueis(alugueis, "alugueis.csv");
-                    ArquivoCSV.salvarBicicletas(bicicletas, "bicicletas.csv");
                     break;
                 case 5:
                     System.out.print("Nome do cliente: ");
                     String nomeCliente = sc.nextLine();
                     devolverBicicleta(nomeCliente, LocalDate.now());
-                    ArquivoCSV.salvarAlugueis(alugueis, "alugueis.csv");
-                    ArquivoCSV.salvarBicicletas(bicicletas, "bicicletas.csv");
                     break;
                 case 6:
                     System.out.print("Modelo: ");
@@ -244,8 +258,14 @@ public class Main {
                     String tipo = sc.nextLine();
                     buscarBicicletas(modelo, tipo);
                     break;
+                case 7:
+                    listarBicicletas();
+                    break;
                 case 0:
                     running = false;
+                    ArquivoCSV.salvarClientes(clientes, "clientes.csv");
+                    ArquivoCSV.salvarBicicletas(bicicletas, "bicicletas.csv");
+                    ArquivoCSV.salvarAlugueis(alugueis, "alugueis.csv");
                     System.out.println("Encerrando o sistema...");
                     break;
                 default:

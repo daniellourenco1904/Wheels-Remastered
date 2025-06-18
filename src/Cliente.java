@@ -4,7 +4,7 @@ import java.util.List;
 public class Cliente {
 
     private String nome;
-    private String endereco;
+    private String email;
     private String telefone;
     private int clienteId;
     private String previousBike;
@@ -14,18 +14,7 @@ public class Cliente {
         this.previousBike = previousBike;
         this.telefone = telefone;
         this.clienteId = clienteId;
-        this.endereco = endereco;
-    }
-
-    @Override
-    public String toString() {
-        return "Cliente{" +
-                "nome='" + nome + '\'' +
-                ", endereco='" + endereco + '\'' +
-                ", telefone='" + telefone + '\'' +
-                ", clienteId=" + clienteId +
-                ", previousBike='" + previousBike + '\'' +
-                '}';
+        this.email = endereco;
     }
 
     public String getNome() {
@@ -60,11 +49,11 @@ public class Cliente {
         this.telefone = telefone;
     }
 
-    public String getEndereco() {
-        return endereco;
+    public String getEmail() {
+        return email;
     }
 
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

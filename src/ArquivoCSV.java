@@ -60,7 +60,6 @@ public class ArquivoCSV {
                         a.isAtivo()
                 );
             }
-            System.out.println("Aluguéis salvos com sucesso em: " + caminho);
         } catch (IOException e) {
             System.out.println("Erro ao salvar aluguéis: " + e.getMessage());
         }
@@ -111,7 +110,7 @@ public class ArquivoCSV {
                         c.getClienteId(),
                         c.getNome(),
                         c.getTelefone(),
-                        c.getEndereco(),
+                        c.getEmail(),
                         c.getPreviousBike() != null ? c.getPreviousBike() : "");
             }
         } catch (IOException e) {
