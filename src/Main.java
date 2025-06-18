@@ -173,6 +173,37 @@ public class Main {
         bicicleta.setStatus(Bicicleta.Status.ALUGADA);
     }
 
+    public static void fazerOrcamentoAluguel() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Modelo da bicicleta desejada: ");
+        String modelo = sc.nextLine();
+
+        Bicicleta bicicleta = bicicletas.stream()
+                .filter(b -> b.getModelo().equalsIgnoreCase(modelo))
+                .findFirst()
+                .orElse(null);
+
+        if (bicicleta == null) {
+            System.out.println("Bicicleta não encontrada.");
+            return;
+        }
+
+        System.out.print("Quantidade de dias desejada: ");
+        int dias = sc.nextInt();
+        sc.nextLine();
+
+        double custoDiarias = dias * bicicleta.getDiaria();
+        double deposito = bicicleta.getDeposito();
+        double total = custoDiarias + deposito;
+
+        System.out.println("\n--- Orçamento de Aluguel ---");
+        System.out.printf("Modelo: %s%n", bicicleta.getModelo());
+        System.out.printf("Diária: R$ %.2f%n", bicicleta.getDiaria());
+        System.out.printf("Depósito: R$ %.2f%n", deposito);
+        System.out.printf("Total para %d dia(s): R$ %.2f%n", dias, total);
+    }
+
     public static void listarAlugueis(){
         if (alugueis.isEmpty()){
             System.out.print("Nenhum aluguel registrado.");
@@ -226,6 +257,7 @@ public class Main {
             System.out.println("5 - Devolver bicicleta");
             System.out.println("6 - Buscar bicicleta");
             System.out.println("7 - Listar bicicletas");
+            System.out.println("8 - Fazer orçamento de aluguel");
             System.out.println("0 - Sair");
             System.out.print("Escolha uma opção: ");
 
@@ -259,6 +291,9 @@ public class Main {
                     break;
                 case 7:
                     listarBicicletas();
+                    break;
+                case 8:
+                    fazerOrcamentoAluguel();
                     break;
                 case 0:
                     running = false;
